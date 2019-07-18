@@ -1,0 +1,17 @@
+STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+CREATE DEFINER=`root`@`%` FUNCTION `getBorrowProcessNo`() RETURNS varchar(32) CHARSET utf8
+    SQL SECURITY INVOKER
+BEGIN
+	#获得实例流程编号
+ 
+  DECLARE curday VARCHAR(8);
+  DECLARE curcount INT;
+  DECLARE curindex VARCHAR(4);
+  
+  SELECT count(0)+1 into curcount FROM cer_borrowprocess where date_format(createtime, '%Y-%m-%d') = date_format(NOW(), '%Y-%m-%d');
+  SET curday = date_format(NOW(), '%Y%m%d');
+  SET curindex = LPAD(curcount, 4 , 0);
+
+	RETURN CONCAT("XD",curday,curindex);
+END
