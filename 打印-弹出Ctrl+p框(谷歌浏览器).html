@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>打印</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="lib/jquery-barcode-2.0.2.min.js"></script>
+  </head>
+  <body>
+    <div id="vue1">
+      <button @click="a">打印</button>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: "#vue1",
+      data: {},
+      methods: {
+        a: function() {
+          var div1 = $(
+            "<div>" +
+              '            <p style="font-size: 18px;padding: 0;margin-top: 25px;margin-bottom: 15px">注意事项：</p>' +
+              '            <table border="0" style="width: 100%;border-collapse:separate; border-spacing:0px 10px;">' +
+              '                <tr style="vertical-align: top;">' +
+              '                    <td style="white-space: nowrap">1、取证时间：</td>' +
+              "                    <td>" +
+              "2017-07-22" +
+              "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" +
+              "34:99:67" +
+              "</td>" +
+              "                </tr>" +
+              '                <tr style="vertical-align: top;padding-top: 15px">' +
+              '                    <td style="white-space: nowrap">2、取证地点：</td>' +
+              "                    <td>" +
+              "广东深圳" +
+              "</td>" +
+              "                </tr>" +
+              '                <tr style="vertical-align: top;padding-top: 15px">' +
+              '                    <td style="white-space: nowrap">3、受理材料：</td>' +
+              "                    <td>" +
+              "其他" +
+              "</td>" +
+              "                </tr>" +
+              "            </table>" +
+              "        </div>"
+          );
+          var div2 = $(
+            '<div style="width: 100%; border: solid 1px black" id="middle">' +
+              '            <div style="display: inline-block;margin-left: 25px">' +
+              "                <p>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<span>" +
+              "陈平安" +
+              "</span></p>" +
+              "                <p>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：<span>" +
+              "男" +
+              "</span></p>" +
+              "                <p>身份证号码：" +
+              "4402003112344544464" +
+              "<span></span></p>" +
+              "            </div>" +
+              "        </div>"
+          );
+          var barCode = $(
+            '<div style="display: inline-block;float: right;margin-right: 5px;margin-top: 20px;" id="target">'
+          );
+          barCode.empty().barcode("XD201907120001", "code128", {
+            barWidth: 2,
+            barHeight: 70,
+            showHRI: true,
+            displayValue: true
+          });
+          div2.append(barCode);
+
+          var div3 = $(
+            '<div style="width: 100%;padding: 10px 0;text-align: center;border: solid 1px black;border-bottom: none">' +
+              "            请仔细核对下列内容" +
+              "        </div>"
+          );
+          var parent1 = $(
+            '<div style="width: 90%;margin-left: 5%;margin-top: 40px">'
+          );
+          parent1.append(div3);
+          parent1.append(div2);
+          parent1.append(div1);
+          var parent2 = $(
+            '<div style="width: 100%;text-align: center;font-size: 24px;margin-top: 90px">受理中国公民出入境普通护照申请回执单</div>'
+          );
+          var body = $('<div style="width: 100%">');
+          body.append(parent2);
+          body.append(parent1);
+          var el = body[0];
+          console.log(body, body[0], parent1);
+          var iframe = document.createElement("IFRAME");
+          var doc = null;
+          iframe.setAttribute(
+            "style",
+            "position:absolute;width:100%;height:100%;left:-500px;top:-500px;"
+          );
+          document.body.appendChild(iframe);
+          doc = iframe.contentWindow.document;
+          // 引入打印的专有CSS样式，www.111Cn.net根据实际修改
+          doc.write(
+            "<LINK rel='stylesheet' type='text/css' href='lib/print2.css'>"
+          );
+          doc.write("<div>" + el.innerHTML + "</div>");
+          doc.close();
+          iframe.contentWindow.onload = function(ev) {
+            iframe.contentWindow.focus();
+            iframe.contentWindow.print();
+            document.body.removeChild(iframe);
+          };
+        }
+      }
+    });
+  </script>
+</html>
