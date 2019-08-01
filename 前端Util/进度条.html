@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>从零开始</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style></style>
+  </head>
+  <body>
+    <div id="vue1">
+      <div style="left: 45%;top:30%;position: absolute;">
+        <el-progress
+          type="circle"
+          :percentage="percet"
+          v-if="isShow"
+          :status="elprostatus"
+        ></el-progress>
+      </div>
+      <el-row>
+        <el-button type="primary" @click="openDIalog">默认按钮</el-button>
+      </el-row>
+      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit">确 定</el-button>
+        </span>
+      </el-dialog>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: "#vue1",
+      data: {
+        dialogVisible: false,
+        isShow: false,
+        percet: 0,
+        elprostatus: ""
+      },
+      methods: {
+        openDIalog() {
+          this.dialogVisible = true;
+        },
+        submit() {
+          var that = this;
+          this.dialogVisible = false;
+          this.isShow = true;
+          var timeout = setInterval(function() {
+            that.percet = that.percet + Math.floor(Math.random() * 10) + 1;
+            console.info("nihaoa ");
+          }, 500);
+        }
+      }
+    });
+  </script>
+</html>
